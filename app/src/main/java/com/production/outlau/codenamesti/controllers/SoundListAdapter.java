@@ -166,6 +166,8 @@ public class SoundListAdapter implements ListAdapter {
 
     public void stopConnection() {
         stopAudio();
-        this.context.unbindService(serviceConnection);
+        if(serviceBound) {
+            this.context.unbindService(serviceConnection);
+        }
     }
 }

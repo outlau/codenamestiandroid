@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303f9f</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="teal">#86E3CE</color>
+    <color name="green">#D0E6A5</color>
+    <color name="yellow">#FFDD94</color>
+    <color name="red">#FA897B</color>
+    <color name="pink">#CCABD8</color>
+    <color name="lightgrey">#CECECE</color>
+    <color name="offwhite">#EEEEEE</color>
+    <color name="dark">#202020</color>
+
+    <color name="viewBg">#f1f5f8</color>
+
+    <color name="colorPrimary">@color/red</color>
+    <color name="colorPrimaryDark">@color/green</color>
+    <color name="colorAccent">@color/yellow</color>
+
 </resources>
