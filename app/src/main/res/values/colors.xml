@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="teal">#86E3CE</color>
-    <color name="green">#D0E6A5</color>
-    <color name="yellow">#FFDD94</color>
-    <color name="red">#FA897B</color>
-    <color name="pink">#CCABD8</color>
-    <color name="lightgrey">#CECECE</color>
-    <color name="offwhite">#EEEEEE</color>
-    <color name="dark">#202020</color>
+
+    #FFEC94 #FFAEAE #FFF0AA #B0E57C #B4D8E7 #56BAEC #383C97
+
+    <color name="red">#FFAEAE</color>
+    <color name="pink">#FF91BB</color>
+    <color name="orange">#F5855B</color>
+    <color name="yellow">#FFD95C</color>
+    <color name="green">#68BBB8</color>
+    <color name="lightblue">#4AC6D7</color>
+    <color name="blue">#56BAEC</color>
+    <color name="darkblue">#383C97</color>
+
+
+    <color name="transparent">#00FFFFFF</color>
+
+
+    <!--<color name="teal">#86E3CE</color>-->
+    <!--<color name="green">#D0E6A5</color>-->
+    <!--<color name="yellow">#FFDD94</color>-->
+    <!--<color name="red">#FA897B</color>-->
+    <!--<color name="pink">#CCABD8</color>-->
+    <!--<color name="lightgrey">#CECECE</color>-->
+    <!--<color name="offwhite">#EEEEEE</color>-->
+    <!--<color name="dark">#202020</color>-->
 
     <color name="viewBg">#f1f5f8</color>
 
-    <color name="colorPrimary">@color/red</color>
+    <color name="colorPrimary">@color/blue</color>
+    <color name="colorWhite">#FFFFFF</color>
     <color name="colorPrimaryDark">@color/green</color>
     <color name="colorAccent">@color/yellow</color>
 

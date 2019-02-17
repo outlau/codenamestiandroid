@@ -26,11 +26,11 @@ public class MessagingActivity extends AppCompatActivity {
 
         editText = findViewById(R.id.message_edit_text);
 
-//        messageAdapter = new MessageAdapter(this);
-//        messagesView = findViewById(R.id.messages_view);
-//        messagesView.setAdapter(messageAdapter);
+        messageAdapter = new MessageAdapter(this);
+        messagesView = findViewById(R.id.messages_view);
+        messagesView.setAdapter(messageAdapter);
 
-//        MemberData data = new MemberData(getRandomName(), getRandomColor());
+        MemberData data = new MemberData(getRandomName(), getRandomColor());
 
     }
 

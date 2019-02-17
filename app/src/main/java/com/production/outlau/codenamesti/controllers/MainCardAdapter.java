@@ -1,7 +1,7 @@
 package com.production.outlau.codenamesti.controllers;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,11 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.Resource;
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.models.MainCard;
 
@@ -27,13 +26,14 @@ public class MainCardAdapter extends RecyclerView.Adapter<MainCardAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public ImageView thumbnail, overflow;
+        public ImageView thumbnail;
+        public RelativeLayout background;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            overflow = (ImageView) view.findViewById(R.id.overflow);
+            background = (RelativeLayout) view.findViewById(R.id.main_card_background);
         }
     }
 
@@ -46,26 +46,38 @@ public class MainCardAdapter extends RecyclerView.Adapter<MainCardAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.main_card, parent, false);
+                .inflate(R.layout.card_main, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        MainCard mainCard = mainCardList.get(position);
+        final MainCard mainCard = mainCardList.get(position);
         holder.title.setText(mainCard.getName());
 
         holder.thumbnail.setImageResource(mainCard.getThumbnail());
+
+        int colorResId = mainCard.getColor();
+
+        holder.background.setBackgroundResource(colorResId);
+
+        holder.background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, mainCard.getNextActivity());
+                mContext.startActivity(intent);
+            }
+        });
         // loading mainCard cover using Glide library
 //        Glide.with(mContext).load(mainCard.getThumbnail()).into(holder.thumbnail);
 
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow);
-            }
-        });
+//        holder.overflow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showPopupMenu(holder.overflow);
+//            }
+//        });
     }
 
     /**

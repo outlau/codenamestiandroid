@@ -27,6 +27,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    // CMD to run emulator
+    //Emulator -avd Nexus_5X_API_24 -partition-size 512 -feature WindowsHypervisorPlatform
+
     private RecyclerView recyclerView;
     private MainCardAdapter adapter;
     private List<MainCard> mainCardList;
@@ -51,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        prepareAlbums();
+        prepareCards();
 
         try {
-            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.backdrop));
+            Glide.with(this).load(R.drawable.background_gradient).into((ImageView) findViewById(R.id.backdrop));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,16 +98,22 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Adding few albums for testing
      */
-    private void prepareAlbums() {
+    private void prepareCards() {
         int[] icons = new int[]{
                 R.drawable.music_note_black,
                 R.drawable.message_black
         };
 
-        mainCardList.add(new MainCard("Sounds", icons[0]));
+//        String[] colors = new String[]{"red", "orange", "yellow", "green", "lightblue", "blue"};
 
-        mainCardList.add(new MainCard("Messages", icons[1]));
+        int[] colors = new int[]{R.color.red,R.color.pink,R.color.orange,R.color.yellow,R.color.green,R.color.lightblue,R.color.blue,R.color.darkblue};
 
+        mainCardList.add(new MainCard("Sounds", icons[0], colors[0], SoundsActivity.class));
+
+        mainCardList.add(new MainCard("Messages", icons[1], colors[1], MessagingActivity.class));
+        mainCardList.add(new MainCard("Messages", icons[1], colors[2], MessagingActivity.class));
+        mainCardList.add(new MainCard("Messages", icons[1], colors[3], MessagingActivity.class));
+        mainCardList.add(new MainCard("Messages", icons[1], colors[4], MessagingActivity.class));
         adapter.notifyDataSetChanged();
     }
 
