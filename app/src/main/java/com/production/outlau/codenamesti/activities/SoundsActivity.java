@@ -115,6 +115,7 @@ public class SoundsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        soundListAdapter.stopConnection();
+        // TODO
+//        soundListAdapter.stopConnection();
     }
 }

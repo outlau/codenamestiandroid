@@ -12,6 +12,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +33,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private MediaPlayer mediaPlayer;
     //path to the audio file
     private String mediaFile;
+
+    private String title;
 
     // Binder given to clients
     private final IBinder iBinder = new LocalBinder();
@@ -61,6 +64,13 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             e.printStackTrace();
             stopSelf();
         }
+
+        Intent intent = new Intent("startMessage");
+        // You can also include some extra data.
+        intent.putExtra("message", "starting Media");
+        intent.putExtra("title",title);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
         mediaPlayer.prepareAsync();
     }
 
@@ -105,6 +115,16 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        System.out.println("test");
+
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("completeMessage");
+        // You can also include some extra data.
+        intent.putExtra("message", "Completing Media");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+
+
         //Invoked when playback of a media source has completed.
         stopMedia();
         //stop the service
@@ -164,7 +184,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
             //An audio file is passed to the service through putExtra();
-            mediaFile = intent.getExtras().getString("media");
+            mediaFile = intent.getExtras().getString("url");
+            title = intent.getStringExtra("title");
         } catch (NullPointerException e) {
             stopSelf();
         }
@@ -197,6 +218,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         public void onReceive(Context context, Intent intent) {
 
             String url = intent.getStringExtra("url");
+            title = intent.getStringExtra("title");
             System.out.println("URL "+url);
 
             //Get the new media index form SharedPreferences
