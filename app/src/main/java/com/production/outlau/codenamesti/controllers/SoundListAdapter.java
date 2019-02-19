@@ -77,7 +77,7 @@ public class SoundListAdapter extends RecyclerView.Adapter<SoundListAdapter.MyVi
             asyncTask = new AsyncMediaTask(this);
             asyncTask.execute();
 
-            image.setImageDrawable(context.getResources().getDrawable(R.drawable.stop,null));
+            image.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_stop,null));
 
             if (!serviceBound) {
                 Intent playerIntent = new Intent(context, MediaPlayerService.class);
@@ -216,7 +216,7 @@ public class SoundListAdapter extends RecyclerView.Adapter<SoundListAdapter.MyVi
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
-                holder.image.setImageDrawable(context.getResources().getDrawable(R.drawable.play,null));
+                holder.image.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_play,null));
             }
         };
         mainHandler.post(myRunnable);
