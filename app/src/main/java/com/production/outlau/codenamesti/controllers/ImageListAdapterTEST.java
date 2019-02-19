@@ -12,12 +12,13 @@ import android.widget.TextView;
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.models.ImageCard;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
-public class ImageListAdapter implements ListAdapter {
+public class ImageListAdapterTEST implements ListAdapter {
     private ArrayList<ImageCard> arrayList;
     private Context context;
-    public ImageListAdapter(Context context, ArrayList<ImageCard> arrayList) {
+    public ImageListAdapterTEST(Context context, ArrayList<ImageCard> arrayList) {
         this.arrayList=arrayList;
         this.context=context;
     }
