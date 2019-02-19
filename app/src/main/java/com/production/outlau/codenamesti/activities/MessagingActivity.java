@@ -30,8 +30,6 @@ public class MessagingActivity extends AppCompatActivity {
         messagesView = findViewById(R.id.messages_view);
         messagesView.setAdapter(messageAdapter);
 
-        MemberData data = new MemberData(getRandomName(), getRandomColor());
-
     }
 
     public void sendMessage(View view) {
@@ -45,7 +43,7 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void getMessage() {
-        messageAdapter.add(new Message("ILOVE YOU", new MemberData(getRandomName(), getRandomColor()), false));
+        messageAdapter.add(new Message("ILOVE YOU", new MemberData("Boyfriend",getResources().getString(0+R.color.theirMessageColor)), false));
         messagesView.setSelection(messagesView.getCount() - 1);
     }
 

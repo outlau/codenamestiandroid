@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.production.outlau.codenamesti.activities.CountdownActivity;
+import com.production.outlau.codenamesti.activities.MapsActivity;
 import com.production.outlau.codenamesti.activities.MessagingActivity;
 import com.production.outlau.codenamesti.activities.PicturesActivity;
 import com.production.outlau.codenamesti.activities.SoundsActivity;
@@ -100,8 +102,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void prepareCards() {
         int[] icons = new int[]{
-                R.drawable.music_note_black,
-                R.drawable.message_black
+                R.drawable.icon_music_note,
+                R.drawable.icon_message,
+                R.drawable.icon_image,
+                R.drawable.icon_map,
+                R.drawable.icon_timer,
         };
 
 //        String[] colors = new String[]{"red", "orange", "yellow", "green", "lightblue", "blue"};
@@ -111,7 +116,13 @@ public class MainActivity extends AppCompatActivity {
         mainCardList.add(new MainCard("Sounds", icons[0], colors[0], SoundsActivity.class));
 
         mainCardList.add(new MainCard("Messages", icons[1], colors[1], MessagingActivity.class));
-        mainCardList.add(new MainCard("Messages", icons[1], colors[2], MessagingActivity.class));
+
+        mainCardList.add(new MainCard("Images", icons[2], colors[2], PicturesActivity.class));
+
+        mainCardList.add(new MainCard("Maps", icons[3], colors[3], MapsActivity.class));
+
+        mainCardList.add(new MainCard("Countdown", icons[4], colors[4], CountdownActivity.class));
+
         mainCardList.add(new MainCard("Messages", icons[1], colors[3], MessagingActivity.class));
         mainCardList.add(new MainCard("Messages", icons[1], colors[4], MessagingActivity.class));
         adapter.notifyDataSetChanged();

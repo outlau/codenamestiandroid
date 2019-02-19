@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class ImageCardAdapter extends RecyclerView.Adapter<SoundListAdapter.MyViewHolder> {
+public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.MyViewHolder> {
     private ArrayList<ImageCard> imageCardList;
     private Context context;
 
@@ -62,8 +62,6 @@ public class ImageCardAdapter extends RecyclerView.Adapter<SoundListAdapter.MyVi
                 .load(imageCard.image)
                 .into(holder.image);
     }
-
-
 
     @Override
     public int getItemCount() {

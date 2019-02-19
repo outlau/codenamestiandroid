@@ -23,6 +23,7 @@
             android:padding="10dp"
             android:clickable="true"
             android:focusable="true"
+            android:background="@color/blue"
             android:foreground="?attr/selectableItemBackground">
 
             <ImageView
@@ -30,8 +31,9 @@
                 android:layout_width="@dimen/thumbnail_width"
                 android:layout_height="@dimen/thumbnail_height"
                 android:layout_alignParentStart="true"
+                android:layout_marginRight="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/message_black" />
+                android:src="@drawable/icon_message" />
 
             <TextView
                 android:id="@+id/title"
@@ -48,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/thumbnail"
-                android:layout_below="@id/title"
+                android:layout_alignBottom="@id/thumbnail"
                 android:textColor="@color/colorWhite"
                 android:text="test"
                 android:fontFamily="@font/raleway"

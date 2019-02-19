@@ -16,6 +16,10 @@
     <color name="transparent">#00FFFFFF</color>
 
 
+
+    <color name="theirMessageColor">#03A9F4</color>
+
+
     <!--<color name="teal">#86E3CE</color>-->
     <!--<color name="green">#D0E6A5</color>-->
     <!--<color name="yellow">#FFDD94</color>-->
