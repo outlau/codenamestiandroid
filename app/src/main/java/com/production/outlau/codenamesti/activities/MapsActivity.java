@@ -2,6 +2,7 @@ package com.production.outlau.codenamesti.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,9 +30,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         volleyHelper = new VolleyHelper(this);
-        volleyHelper.getString("coordinates", new VolleyCallback(){
+        volleyHelper.getString("coordinates", new VolleyCallback() {
             @Override
-            public void onSuccess(String result){
+            public void onSuccess(String result) {
                 setMarkers(result);
             }
         });
@@ -48,17 +49,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     //TODO
-//    private void setMarkers(String json){
-//        try {
-//            JSONArray jsonArray = new JSONArray(json);
-//            for(JSONObject jsonObject : jsonArray){
-//                JSONObject reader = new JSONObject(in);
-//                System.out.println(jsonObject["id"]);
-//            }
-//
-//            System.out.println("My App"+ obj.toString());
-//        } catch (Throwable t) {
-//            System.out.println("My App" + "Could not parse malformed JSON: \"" + json + "\"");
-//        }
-//    }
+    private void setMarkers(String json) {
+        try {
+            JSONArray jsonArray = new JSONArray(json);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                System.out.println(jsonObject);
+            }
+        } catch (Throwable t) {
+            System.out.println("My App" + "Could not parse malformed JSON: \"" + json + "\"");
+        }
+    }
 }
