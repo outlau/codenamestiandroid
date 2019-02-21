@@ -41,11 +41,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     //TODO
@@ -54,10 +49,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             JSONArray jsonArray = new JSONArray(json);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                System.out.println(jsonObject);
+                float latitude = (float)jsonObject.getDouble("latitude");
+                float longitude = (float)jsonObject.getDouble("longitude");
+                String name = jsonObject.getString("name");
+
+                LatLng location = new LatLng(latitude, longitude);
+                mMap.addMarker(new MarkerOptions().position(location).title("Marker in "+name));
+                if(i == 0) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                }
+                System.out.println("latitude"+latitude);
+                System.out.println("longitude"+longitude);
+                System.out.println("name"+name);
             }
-        } catch (Throwable t) {
+        } catch (Exception e) {
             System.out.println("My App" + "Could not parse malformed JSON: \"" + json + "\"");
+            System.out.println(e);
         }
     }
 }

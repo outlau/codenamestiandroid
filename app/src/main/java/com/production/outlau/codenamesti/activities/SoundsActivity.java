@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.controllers.SoundListAdapter;
+import com.production.outlau.codenamesti.helpers.RecyclerViewHelper;
 import com.production.outlau.codenamesti.models.SoundCard;
 
 import java.util.ArrayList;
@@ -36,14 +37,14 @@ public class SoundsActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
+        recyclerView.addItemDecoration(new RecyclerViewHelper(1, 10, true, this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(soundListAdapter);
 
         prepareCards();
 
 //        try {
-//            Glide.with(this).load(R.drawable.background_gradient).into((ImageView) findViewById(R.id.backdrop));
+//            Glide.with(this).load(R.drawable.backdrop_gradient).into((ImageView) findViewById(R.id.backdrop));
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -68,49 +69,6 @@ public class SoundsActivity extends AppCompatActivity {
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-    }
-
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
-
 
     @Override
     protected void onDestroy() {

@@ -43,7 +43,7 @@ public class PicturesActivity extends AppCompatActivity {
         prepareCards();
 
 //        try {
-//            Glide.with(this).load(R.drawable.background_gradient).into((ImageView) findViewById(R.id.backdrop));
+//            Glide.with(this).load(R.drawable.backdrop_gradient).into((ImageView) findViewById(R.id.backdrop));
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }

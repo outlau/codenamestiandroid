@@ -15,10 +15,17 @@
 
     <color name="transparent">#00FFFFFF</color>
 
+    <color name="white">#FFFFFF</color>
 
+
+    <color name="darkPink">#f5b1c8</color>
+    <color name="lightPink">#F5CEC7</color>
 
     <color name="theirMessageColor">#03A9F4</color>
 
+    <color name="shadowColor">#8F8F8F</color>
+
+    <color name="colorText">@color/theirMessageColor</color>
 
     <!--<color name="teal">#86E3CE</color>-->
     <!--<color name="green">#D0E6A5</color>-->
