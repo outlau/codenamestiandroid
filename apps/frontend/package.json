@@ -6,6 +6,7 @@
     "start": "ng serve",
     "serve": "ng serve -o",
     "build": "ng build",
+    "build-watch": "ng build --watch",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,7 +24,8 @@
     "core-js": "^2.5.4",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "fireworks-canvas": "^2.3.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.0",
