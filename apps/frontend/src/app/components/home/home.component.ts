@@ -46,8 +46,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this._countdownEnds = "2019-02-23:16:00";
-    this._countdownEnds = "2019-02-23:14:44";
+    this._countdownEnds = "2019-02-23:16:00";
+    // this._countdownEnds = "2019-02-23:14:44";
     this._countdownStarts = "2019-02-14:12:00";
 
     this._diff = Date.parse(this._countdownEnds) - Date.parse(new Date().toString());
