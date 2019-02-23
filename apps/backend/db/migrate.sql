@@ -44,6 +44,6 @@ INSERT INTO `times` (`datetime`) VALUES ('2019-03-22 14:00:00');
 INSERT INTO `coordinates` (`id`, `name`, `latitude`, `longitude`) VALUES (NULL, 'Brønshøj', '55.710532', '12.496634');
 INSERT INTO `coordinates` (`id`, `name`, `latitude`, `longitude`) VALUES (NULL, 'London', '-45', '40');
 
-INSERT INTO quotes (name) VALUES ('The love of blitzi heals');
+INSERT INTO quotes (name) VALUES ('The love of blitzi is eternal');
 
 INSERT INTO sti (name) VALUES ('sti1.wav');
