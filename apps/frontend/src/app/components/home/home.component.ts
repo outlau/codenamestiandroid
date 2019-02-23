@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit {
 
   private _started: boolean;
 
+  private _countdownEnded: boolean = false;
+
   private _countdownEnds;
   private _countdownStarts;
   private _diff: number;
@@ -44,7 +46,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._countdownEnds = "2019-02-23:16:00";
+    // this._countdownEnds = "2019-02-23:16:00";
+    this._countdownEnds = "2019-02-23:14:44";
     this._countdownStarts = "2019-02-14:12:00";
 
     this._diff = Date.parse(this._countdownEnds) - Date.parse(new Date().toString());
@@ -61,12 +64,18 @@ export class HomeComponent implements OnInit {
       this._diff = Date.parse(this._countdownEnds) - Date.parse(new Date().toString());
       this._startDiff = Date.parse(this._countdownStarts) - Date.parse(new Date().toString());
     })).subscribe(() => {
-      console.log(this._startDiff);
+      console.log(this._diff);
       this.loaded = true;
       if(this._startDiff > 0){
         this._started = false;
         return;
       }
+
+      if(this._diff < 0){
+        this._countdownEnded = true;
+        return;
+      }
+
       if(this._days == 0){
         this.subText = "Come back tomorrow for a sorpresa";
       } else {
