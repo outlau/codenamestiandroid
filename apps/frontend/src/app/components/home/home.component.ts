@@ -9,15 +9,15 @@ import { map, share } from "rxjs/operators";
 })
 export class HomeComponent implements OnInit {
 
-  private loaded: boolean = false;
-  private bigSti : boolean;
+  public loaded: boolean = false;
+  public bigSti : boolean;
 
-  private _started: boolean;
+  public _started: boolean;
 
-  private _countdownEnded: boolean = false;
+  public _countdownEnded: boolean = false;
 
-  private _countdownEnds;
-  private _countdownStarts;
+  public _countdownEnds;
+  public _countdownStarts;
   private _diff: number;
   private _startDiff: number;
   private _days: number;
