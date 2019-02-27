@@ -1,0 +1,16 @@
+{
+  "name": "codenamesti",
+  "version": "0.0.1",
+  "scripts": {
+    "ng build": "cd frontend && ng build"
+  },
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.13.0",
+    "prettier": "^1.16.4"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
