@@ -2,7 +2,8 @@
   "name": "codenamesti",
   "version": "0.0.1",
   "scripts": {
-    "ng build": "cd frontend && ng build"
+    "build": "cd apps/frontend && npm run build",
+    "start": "cd apps/backend && npm start"
   },
   "private": true,
   "devDependencies": {
