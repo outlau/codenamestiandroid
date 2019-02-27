@@ -16,6 +16,8 @@ var app = express();
 
 const apiRouter = require('./routes/index');
 
+app.use('/', express.static(path.join(__dirname, '../frontend/dist/frontend/')));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
