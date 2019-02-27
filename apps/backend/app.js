@@ -23,8 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.get('*', (req, res) => {
-  console.log("test");
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'));
 });
 // app.use('/users', usersRouter);
