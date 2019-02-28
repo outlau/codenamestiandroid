@@ -10,27 +10,22 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.models.SoundCard;
 import com.production.outlau.codenamesti.services.MediaPlayerService;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class SoundListAdapter extends RecyclerView.Adapter<SoundListAdapter.MyViewHolder> {
+public class SoundCardAdapter extends RecyclerView.Adapter<SoundCardAdapter.MyViewHolder> {
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.production.outlau.codenamesti.PlayNewAudio";
 
     private MediaPlayerService player;
@@ -127,7 +122,7 @@ public class SoundListAdapter extends RecyclerView.Adapter<SoundListAdapter.MyVi
         };
     }
 
-    public SoundListAdapter(Context context, ArrayList<SoundCard> soundCardList) {
+    public SoundCardAdapter(Context context, ArrayList<SoundCard> soundCardList) {
         this.context = context;
         this.soundCardList = soundCardList;
         this.serviceConnection = new ServiceConnection() {

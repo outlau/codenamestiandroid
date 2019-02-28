@@ -1,16 +1,23 @@
 package com.production.outlau.codenamesti.models;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+
 public class MainCard {
     private String name;
+    private String subTitle;
     private int thumbnail;
     private int color;
-    private Class activity;
+    private View.OnClickListener onClickListener;
 
-    public MainCard(String name, int thumbnail, int color, Class activity) {
+
+    public MainCard(String name, String subTitle, int thumbnail, int color,  View.OnClickListener onClickListener) {
         this.name = name;
+        this.subTitle = subTitle;
         this.thumbnail = thumbnail;
         this.color = color;
-        this.activity = activity;
+        this.onClickListener = onClickListener;
     }
 
     public String getName() {
@@ -29,7 +36,9 @@ public class MainCard {
         this.thumbnail = thumbnail;
     }
 
-    public Class getNextActivity() { return activity; }
+    public View.OnClickListener getOnClickListener() { return onClickListener; }
+
+    public String getSubTitle() { return subTitle; }
 
     public int getColor() { return color; }
 }

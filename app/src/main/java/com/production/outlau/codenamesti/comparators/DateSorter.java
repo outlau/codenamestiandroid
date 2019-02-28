@@ -8,7 +8,7 @@ import static java.lang.Long.signum;
 
 public class DateSorter implements Comparator<TimeCard> {
     public int compare(TimeCard timeCard1, TimeCard timeCard2) {
-        return signum(timeCard1.getDate().compareTo(timeCard2.getDate()));
+        return signum(timeCard2.getDate().compareTo(timeCard1.getDate()));
     }
 }
 

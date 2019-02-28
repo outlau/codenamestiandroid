@@ -1,45 +1,39 @@
 package com.production.outlau.codenamesti.activities;
 
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.comparators.DateSorter;
-import com.production.outlau.codenamesti.controllers.ImageCardAdapter;
 import com.production.outlau.codenamesti.controllers.TimeCardAdapter;
 import com.production.outlau.codenamesti.controllers.VolleyHelper;
 import com.production.outlau.codenamesti.helpers.RecyclerViewHelper;
 import com.production.outlau.codenamesti.interfaces.VolleyCallback;
-import com.production.outlau.codenamesti.models.ImageCard;
 import com.production.outlau.codenamesti.models.TimeCard;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
-import java.util.TimeZone;
 
-public class CountdownActivity extends AppCompatActivity {
+public class CountdownActivity extends Fragment {
     VolleyHelper volleyHelper;
 
     RelativeLayout listViewContainer;
@@ -55,12 +49,20 @@ public class CountdownActivity extends AppCompatActivity {
     TextView minutesSubTv;
     TextView secondsSubTv;
 
+    TextView timeHeaderText;
+
     LinearLayout timerContainer;
+
+    // This is the layout of the main content of MainActivity
+    // Holds everything
+    RelativeLayout mainContent;
 
     long startMillis;
     long endMillis;
 
-    Button dragButton;
+    ImageButton dragButton;
+
+    ProgressBar loadingIcon;
 
     int closeHeight = 300;
     int headerHeight = 50;
@@ -70,42 +72,50 @@ public class CountdownActivity extends AppCompatActivity {
     private ArrayList<TimeCard> timeCardList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_countdown);
-        daysTv = findViewById(R.id.days_tv);
-        hoursTv = findViewById(R.id.hours_tv);
-        minutesTv = findViewById(R.id.minutes_tv);
-        secondsTv = findViewById(R.id.seconds_tv);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+        View v = inflater.inflate(R.layout.activity_countdown, parent, false);
+        mainContent = (RelativeLayout)parent.getParent();
 
-        daysSubTv = findViewById(R.id.days_sub_tv);
-        hoursSubTv = findViewById(R.id.hours_sub_tv);
-        minutesSubTv = findViewById(R.id.minutes_sub_tv);
-        secondsSubTv = findViewById(R.id.seconds_sub_tv);
+        daysTv = v.findViewById(R.id.days_tv);
+        hoursTv = v.findViewById(R.id.hours_tv);
+        minutesTv = v.findViewById(R.id.minutes_tv);
+        secondsTv = v.findViewById(R.id.seconds_tv);
 
-        timerContainer = findViewById(R.id.timer_container);
-        listViewContainer = findViewById(R.id.list_view_container);
-        dragButton = findViewById(R.id.button);
+        daysSubTv = v.findViewById(R.id.days_sub_tv);
+        hoursSubTv = v.findViewById(R.id.hours_sub_tv);
+        minutesSubTv = v.findViewById(R.id.minutes_sub_tv);
+        secondsSubTv = v.findViewById(R.id.seconds_sub_tv);
 
-        recyclerView = findViewById(R.id.recycler_view);
+        timeHeaderText = v.findViewById(R.id.header_text);
 
+        timerContainer = v.findViewById(R.id.timer_container);
+        listViewContainer = v.findViewById(R.id.list_view_container);
+        dragButton = v.findViewById(R.id.slide_button);
+
+        recyclerView = v.findViewById(R.id.recycler_view);
+
+        loadingIcon = v.findViewById(R.id.loading_icon);
         timeCardList = new ArrayList<>();
-        timeCardAdapter = new TimeCardAdapter(this, timeCardList);
+        timeCardAdapter = new TimeCardAdapter(getContext(), timeCardList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
+        if(countDownTimer != null){
+            countDownTimer.cancel();
+        }
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new RecyclerViewHelper(1, 0, true, this));
+        recyclerView.addItemDecoration(new RecyclerViewHelper(1, 0, true, getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(timeCardAdapter);
 
-
         onTouchExpand(dragButton);
 
-        volleyHelper = new VolleyHelper(this);
-        volleyHelper.getString("timer", new VolleyCallback() {
+        volleyHelper = new VolleyHelper(getContext());
+        volleyHelper.getString("times", new VolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 startMillis = System.currentTimeMillis();
+                timeHeaderText.setText("Arriving in:");
                 try {
                     JSONArray jsonArray = new JSONArray(result);
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -114,19 +124,17 @@ public class CountdownActivity extends AppCompatActivity {
                         timeCardList.add(new TimeCard(datetime));
                     }
                     Collections.sort(timeCardList, new DateSorter());
-                    System.out.println(timeCardList.get(timeCardList.size()-1).getDate());
-                    System.out.println("TESTESTSETSET");
-                    System.out.println("TESTESTSETSET");
-                    System.out.println("TESTESTSETSET");
-                    System.out.println("TESTESTSETSET");
-                    System.out.println("TESTESTSETSET");
-                    endMillis = timeCardList.get(timeCardList.size()-1).getDate().getTime();
+                    endMillis = timeCardList.get(0).getDate().getTime();
                     timeCardAdapter.notifyDataSetChanged();
+
+                    timerContainer.setVisibility(View.VISIBLE);
+
 
                 } catch (Exception e) {
                     System.out.println("My App" + "Could not parse malformed JSON: \"" + result + "\"");
                     System.out.println(e);
                 }
+
 
                 countDownTimer = new CountDownTimer(endMillis - startMillis, 1000) {
                 public void onTick(long millisUntilFinished) {
@@ -134,12 +142,26 @@ public class CountdownActivity extends AppCompatActivity {
                 }
 
                 public void onFinish() {
-                    System.out.println("done");
+                    timeHeaderText.setText("No upcoming arrivals");
+                    timerContainer.setVisibility(View.INVISIBLE);
                 }
             };
                 countDownTimer.start();
             }
+            @Override
+            public void onError(String error){
+                timeHeaderText.setText(error);
+                //TODO
+            }
+            @Override
+            public void onResponse(){
+                loadingIcon.setVisibility(View.GONE);
+            }
         });
+
+        animateListViewHeight(1,500);
+
+        return v;
     }
 
     public void updateTvs(long timeInMillisSeconds) {
@@ -186,28 +208,27 @@ public class CountdownActivity extends AppCompatActivity {
             float pos;
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) listViewContainer.getLayoutParams();
             int viewHeight;
+            int height;
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         v.setPressed(true);
-                        viewHeight = ((View) listViewContainer.getParent()).getHeight() + getSupportActionBar().getHeight();
+                        viewHeight = ((View) listViewContainer.getParent()).getHeight();// + getSupportActionBar().getHeight();
+                        height = mainContent.getHeight();
                         open();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        pos = clamp(viewHeight-event.getRawY(),headerHeight,1000);
+                        pos = clamp(height-event.getRawY(),headerHeight,(int)(viewHeight*.8));
 
                         System.out.println("viewHeight "+viewHeight);
                         System.out.println("pos "+pos);
                         System.out.println("headerHeight "+headerHeight);
 
+                        System.out.println("getHeight "+height );
+                        System.out.println("event.getRawY() "+event.getRawY() );
+
                         layoutParams.height = (int)pos;
-
-
-//                        if(pos < closeHeight){
-//                            System.out.println("NOW");
-//                            close(viewHeight);
-//                        }
 
                         listViewContainer.setLayoutParams(layoutParams);
 
@@ -218,8 +239,6 @@ public class CountdownActivity extends AppCompatActivity {
                         if(listViewContainer.getLayoutParams().height < closeHeight){
                             close(viewHeight);
                         }
-//                        else
-//                            setExpanded(true, getActivity());
 
                         break;
                     default:
@@ -232,7 +251,7 @@ public class CountdownActivity extends AppCompatActivity {
 
     private void close(int viewHeight){
 
-        animateListViewHeight(1);
+        animateListViewHeight(1, 500);
         animateDragButtonMargin(25);
 
     }
@@ -261,24 +280,14 @@ public class CountdownActivity extends AppCompatActivity {
         dragButton.startAnimation(a);
     }
 
-    private void animateListViewHeight(final int newHeight) {
+    private void animateListViewHeight(final int newHeight, final int duration) {
         final ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) listViewContainer.getLayoutParams();
-
         final int startHeight = layoutParams.height;
 
-        System.out.println("START");
-        System.out.println("START");
-        System.out.println("START");
-        System.out.println("START");
-        System.out.println("START");
-        System.out.println("START");
         Animation a = new Animation() {
 
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                System.out.println("time "+interpolatedTime);
-                System.out.println("newheight! "+(newHeight * interpolatedTime));
-
                 layoutParams.height = (int)((newHeight - startHeight) * interpolatedTime) + startHeight;
                 listViewContainer.setLayoutParams(layoutParams);
             }
@@ -286,6 +295,4 @@ public class CountdownActivity extends AppCompatActivity {
         a.setDuration(500); // in ms
         listViewContainer.startAnimation(a);
     }
-
-
 }

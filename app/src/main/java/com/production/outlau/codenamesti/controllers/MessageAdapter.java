@@ -25,6 +25,11 @@ public class MessageAdapter extends BaseAdapter {
         this.context = context;
     }
 
+    class MessageViewHolder {
+        public View avatar;
+        public TextView name;
+        public TextView messageBody;
+    }
 
     public void add(Message message) {
         this.messages.add(message);
@@ -73,10 +78,4 @@ public class MessageAdapter extends BaseAdapter {
         return convertView;
     }
 
-}
-
-class MessageViewHolder {
-    public View avatar;
-    public TextView name;
-    public TextView messageBody;
 }

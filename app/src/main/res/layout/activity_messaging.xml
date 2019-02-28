@@ -1,26 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clipToPadding="false"
     android:focusableInTouchMode="true"
-    tools:context="com.production.outlau.codenamesti.activities.MessagingActivity">
+    tools:context="com.production.outlau.codenamesti.MainActivity">
 
 
     <ListView
         android:id="@+id/messages_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_container"
+        android:layout_marginTop="20dp"
         android:layout_weight="2"
         android:divider="#fff" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.eyalbira.loadingdots.LoadingDots
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/load_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/dots_circle"
+        android:paddingTop="10dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+
+        app:LoadingDots_auto_play="true"
+
+        android:alpha="0"
+
+        android:layout_above="@id/bottom_container"
+
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="30dp"
+
+        app:LoadingDots_dots_color="@color/blue"
+        app:LoadingDots_dots_count="3"
+        app:LoadingDots_dots_size="12dp"
+        app:LoadingDots_dots_space="3dp"
+
+        app:LoadingDots_loop_duration="800"
+        app:LoadingDots_loop_start_delay="100"
+
+        app:LoadingDots_jump_duration="200"
+        app:LoadingDots_jump_height="4dp"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
+
 
         <EditText
             android:id="@+id/message_edit_text"
@@ -35,14 +73,14 @@
 
 
         <ImageButton
+            android:id="@+id/send_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:padding="20dp"
             android:layout_marginHorizontal="10dp"
-            android:background="@drawable/ic_send_black_24dp"
-            android:onClick="sendMessage"/>
+            android:background="@drawable/ic_send_black_24dp"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

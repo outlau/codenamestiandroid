@@ -1,7 +1,12 @@
 package com.production.outlau.codenamesti.activities;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,26 +21,42 @@ import com.production.outlau.codenamesti.interfaces.VolleyCallback;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends Fragment implements OnMapReadyCallback {
 
     VolleyHelper volleyHelper;
+
+    private FragmentActivity mContext;
 
     private GoogleMap mMap;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+        View v = inflater.inflate(R.layout.activity_maps, parent, false);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        volleyHelper = new VolleyHelper(this);
+        volleyHelper = new VolleyHelper(getContext());
         volleyHelper.getString("coordinates", new VolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 setMarkers(result);
             }
+            @Override
+            public void onError(String error) {
+                // TODO
+            }
+            @Override
+            public void onResponse() {
+
+            }
         });
+        return v;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        mContext = (FragmentActivity) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -43,7 +64,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
     }
 
-    //TODO
     private void setMarkers(String json) {
         try {
             JSONArray jsonArray = new JSONArray(json);
