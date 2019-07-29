@@ -19,7 +19,7 @@ public class Message {
         return memberData;
     }
 
-    public boolean isBelongsToCurrentUser() {
+    public boolean belongsToCurrentUser() {
         return belongsToCurrentUser;
     }
 }

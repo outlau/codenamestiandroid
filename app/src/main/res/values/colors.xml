@@ -7,17 +7,32 @@
     <color name="pink">#FF91BB</color>
     <color name="orange">#F5855B</color>
     <color name="yellow">#FFD95C</color>
-    <color name="green">#68BBB8</color>
+    <color name="green">#68BB7D</color>
     <color name="lightblue">#4AC6D7</color>
     <color name="blue">#56BAEC</color>
     <color name="darkblue">#383C97</color>
 
+    F5855B
+    68BB7D
+    FFD95C
+    383C97
 
     <color name="transparent">#00FFFFFF</color>
 
+    <color name="white">#FFFFFF</color>
 
+
+    <color name="darkPink">#f5b1c8</color>
+    <color name="lightPink">#F5CEC7</color>
 
     <color name="theirMessageColor">#03A9F4</color>
+
+    <color name="shadowColor">#8F8F8F</color>
+
+    <color name="colorText">@color/theirMessageColor</color>
+
+    <color name="countdownColor">@color/theirMessageColor</color>
+
 
 
     <!--<color name="teal">#86E3CE</color>-->

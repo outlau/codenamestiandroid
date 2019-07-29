@@ -1,15 +1,6 @@
 package com.production.outlau.codenamesti.controllers;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,24 +10,18 @@ import android.widget.TextView;
 
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.models.ImageCard;
-import com.production.outlau.codenamesti.models.SoundCard;
-import com.production.outlau.codenamesti.services.MediaPlayerService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.MyViewHolder> {
     private ArrayList<ImageCard> imageCardList;
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title;
         public ImageView image;
         public MyViewHolder(View view) {
             super(view);
-            title = view.findViewById(R.id.title);
             image = view.findViewById(R.id.img);
         }
     }
@@ -57,9 +42,8 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final ImageCard imageCard = imageCardList.get(position);
-        holder.title.setText(imageCard.title);
         Picasso.with(context)
-                .load(imageCard.image)
+                .load(imageCard.link)
                 .into(holder.image);
     }
 

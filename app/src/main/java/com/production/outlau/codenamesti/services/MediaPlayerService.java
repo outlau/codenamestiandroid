@@ -1,6 +1,5 @@
 package com.production.outlau.codenamesti.services;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,19 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 
-import com.production.outlau.codenamesti.R;
-import com.production.outlau.codenamesti.activities.SoundsActivity;
-import com.production.outlau.codenamesti.controllers.SoundListAdapter;
+import com.production.outlau.codenamesti.controllers.SoundCardAdapter;
 
 import java.io.IOException;
 
@@ -246,7 +238,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 
     private void register_playNewAudio() {
         //Register playNewMedia receiver
-        IntentFilter filter = new IntentFilter(SoundListAdapter.Broadcast_PLAY_NEW_AUDIO);
+        IntentFilter filter = new IntentFilter(SoundCardAdapter.Broadcast_PLAY_NEW_AUDIO);
         registerReceiver(playNewAudio, filter);
     }
 

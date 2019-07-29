@@ -1,30 +1,41 @@
 package com.production.outlau.codenamesti;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Transformation;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.production.outlau.codenamesti.activities.CountdownActivity;
 import com.production.outlau.codenamesti.activities.MapsActivity;
 import com.production.outlau.codenamesti.activities.MessagingActivity;
 import com.production.outlau.codenamesti.activities.PicturesActivity;
 import com.production.outlau.codenamesti.activities.SoundsActivity;
 import com.production.outlau.codenamesti.controllers.MainCardAdapter;
+import com.production.outlau.codenamesti.helpers.VolleyHelper;
+import com.production.outlau.codenamesti.helpers.RecyclerViewHelper;
+import com.production.outlau.codenamesti.interfaces.VolleyCallback;
 import com.production.outlau.codenamesti.models.MainCard;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,70 +47,136 @@ public class MainActivity extends AppCompatActivity {
     private MainCardAdapter adapter;
     private List<MainCard> mainCardList;
 
+    RelativeLayout backdrop;
+    ImageButton backButton;
+    LinearLayout fragmentHolder;
+
+    TextView dateTv;
+    TextView blitziQuote;
+
+    int backdropExpandedHeight = 1000;
+    int backdropMinimizedHeight = 600;
+
+    ImageButton stiButton;
+
+
+    MediaPlayer mPlayer;
+    boolean isPlaying;
+    VolleyHelper volleyHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        initCollapsingToolbar();
 
-        initCollapsingToolbar();
+        backdrop = findViewById(R.id.backdrop);
+        animateViewHeight(backdropExpandedHeight,backdrop);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        fragmentHolder = findViewById(R.id.fragment_container);
+        backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exitFragment();
+            }
+        });
+        backButton.setVisibility(View.GONE);
+
+        stiButton = findViewById(R.id.sti);
+        stiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPlaying){
+                    playSti();
+                } else {
+                    stopSti();
+                }
+            }
+        });
+
+        blitziQuote = findViewById(R.id.blitzi_quote);
+        dateTv = findViewById(R.id.today);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date();
+        System.out.println(sdf.format(date));
+        dateTv.setText(sdf.format(date));
+
+        recyclerView = findViewById(R.id.recycler_view);
 
         mainCardList = new ArrayList<>();
         adapter = new MainCardAdapter(this, mainCardList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
+        recyclerView.addItemDecoration(new RecyclerViewHelper(1, 0, true, this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        prepareCards();
-
-        try {
-            Glide.with(this).load(R.drawable.background_gradient).into((ImageView) findViewById(R.id.backdrop));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Initializing collapsing toolbar
-     * Will show and hide the toolbar title on scroll
-     */
-    private void initCollapsingToolbar() {
-        final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        appBarLayout.setExpanded(true);
-
-        // hiding & showing the title when toolbar expanded & collapsed
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = false;
-            int scrollRange = -1;
-
+        volleyHelper = new VolleyHelper(this);
+        volleyHelper.getString("quotes", new VolleyCallback() {
             @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setTitle(getString(R.string.app_name));
-                    isShow = true;
-                } else if (isShow) {
-                    collapsingToolbar.setTitle(" ");
-                    isShow = false;
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonArray = new JSONObject(result);
+                    String quote = jsonArray.getString("name");
+                    blitziQuote.setText(quote);
+
+                } catch (Exception e) {
+                    System.out.println("My App" + "Could not parse malformed JSON: \"" + result + "\"");
+                    System.out.println(e);
                 }
             }
+            @Override
+            public void onError(String error){
+                //TODO
+
+            }
+            @Override
+            public void onResponse(){
+                // TODO
+//                loadingIcon.setVisibility(View.GONE);
+            }
         });
+
+        for (Fragment fragment:getSupportFragmentManager().getFragments()) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
+
+        prepareCards();
+//
+//        try {
+//            Glide.with(this).load(R.drawable.background_top).into((ImageView) findViewById(R.id.backdrop));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
-    /**
-     * Adding few albums for testing
-     */
+
+    private View.OnClickListener getViewOnClick(final Fragment fragment){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation fade_out = AnimationUtils.loadAnimation(getApplicationContext(),
+                    R.anim.fade_out);
+
+                recyclerView.startAnimation(fade_out);
+                recyclerView.setVisibility(View.INVISIBLE);
+                blitziQuote.startAnimation(fade_out);
+                blitziQuote.setVisibility(View.INVISIBLE);
+                backButton.setVisibility(View.VISIBLE);
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                animateViewHeight(backdropMinimizedHeight,backdrop);
+                ft.commit();
+            }
+        };
+    }
+
     private void prepareCards() {
         int[] icons = new int[]{
                 R.drawable.icon_music_note,
@@ -109,85 +186,147 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.icon_timer,
         };
 
-//        String[] colors = new String[]{"red", "orange", "yellow", "green", "lightblue", "blue"};
-
         int[] colors = new int[]{R.color.red,R.color.pink,R.color.orange,R.color.yellow,R.color.green,R.color.lightblue,R.color.blue,R.color.darkblue};
 
-        mainCardList.add(new MainCard("Sounds", icons[0], colors[0], SoundsActivity.class));
 
-        mainCardList.add(new MainCard("Messages", icons[1], colors[1], MessagingActivity.class));
+        mainCardList.add(new MainCard(
+                "Sounds",
+                "The sounds of boyfriend",
+                icons[0],
+                R.color.blue,
+                getViewOnClick(new SoundsActivity())
+        ));
 
-        mainCardList.add(new MainCard("Images", icons[2], colors[2], PicturesActivity.class));
+        mainCardList.add(new MainCard(
+                "Boyfriend pics",
+                "Pictures of boyfriend",
+                icons[2],
+                R.color.orange,
+                getViewOnClick(new PicturesActivity())
+        ));
 
-        mainCardList.add(new MainCard("Maps", icons[3], colors[3], MapsActivity.class));
+//        mainCardList.add(new MainCard(
+//                "Couples pics",
+//                "Pictures of boyfriend with sti",
+//                icons[2],
+//                R.color.orange,
+//                getViewOnClick(new PicturesActivity())
+//        ));
 
-        mainCardList.add(new MainCard("Countdown", icons[4], colors[4], CountdownActivity.class));
 
-        mainCardList.add(new MainCard("Messages", icons[1], colors[3], MessagingActivity.class));
-        mainCardList.add(new MainCard("Messages", icons[1], colors[4], MessagingActivity.class));
+        mainCardList.add(new MainCard(
+                "Messages",
+                "Always responsive boyfriend",
+                icons[1],
+                R.color.green,
+                getViewOnClick(new MessagingActivity())
+        ));
+
+        mainCardList.add(new MainCard(
+                "Maps",
+                "Places boyfriend and you have been",
+                icons[3],
+                R.color.yellow,
+                getViewOnClick(new MapsActivity())
+        ));
+
+        mainCardList.add(new MainCard(
+                "Countdown",
+                "Check when boyfriend is in Sweden",
+                icons[4],
+                R.color.darkblue,
+                getViewOnClick(new CountdownActivity())
+        ));
+
         adapter.notifyDataSetChanged();
     }
 
-    /**
-     * RecyclerView item decoration - give equal margin around grid item
-     */
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+    private void playSti() {
+        isPlaying = true;
+        stiButton.setImageDrawable(getResources().getDrawable(R.drawable.icon_stop_white,null));
 
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
+        String audioUrl = volleyHelper.url+"sti";
+        mPlayer = new MediaPlayer();
+        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try{
+            mPlayer.setDataSource(audioUrl);
+            mPlayer.prepare();
 
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
+            mPlayer.start();
+
+        }catch (IOException e){
+            // Catch the exception
+            e.printStackTrace();
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }catch (SecurityException e){
+            e.printStackTrace();
+        }catch (IllegalStateException e){
+            e.printStackTrace();
         }
 
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                stiButton.setImageDrawable(getResources().getDrawable(R.drawable.icon_play_white,null));
+                isPlaying = false;
             }
+        });
+    }
+
+    private void stopSti() {
+        isPlaying = false;
+        mPlayer.stop();
+        stiButton.setImageDrawable(getResources().getDrawable(R.drawable.icon_play_white,null));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!exitFragment()){
+            super.onBackPressed();
         }
     }
 
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    public boolean exitFragment() {
+        // returns false if the user is not in a fragment
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+
+        if(fragmentList.isEmpty()){
+            return false;
+        }
+
+        for (Fragment fragment:getSupportFragmentManager().getFragments()) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
+        Animation fade_in = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fade_in);
+
+        recyclerView.startAnimation(fade_in);
+        recyclerView.setVisibility(View.VISIBLE);
+        blitziQuote.startAnimation(fade_in);
+        blitziQuote.setVisibility(View.VISIBLE);
+        backButton.setVisibility(View.GONE);
+
+        animateViewHeight(backdropExpandedHeight,backdrop);
+
+        return true;
     }
 
-    
-    public void GoToPictures(View v){
-        Intent intent = new Intent(this, PicturesActivity.class);
-        startActivity(intent);
-    }
+    private void animateViewHeight(final int newHeight, final View v) {
+        final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
 
+        final int startHeight = layoutParams.height;
 
-    public void GoToSounds(View v){
-        Intent intent = new Intent(this, SoundsActivity.class);
-        startActivity(intent);
-    }
+        Animation a = new Animation() {
 
-    public void GoToMessaging(View v){
-        Intent intent = new Intent(this, MessagingActivity.class);
-        startActivity(intent);
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+
+                layoutParams.height = (int)((newHeight - startHeight) * interpolatedTime) + startHeight;
+                v.setLayoutParams(layoutParams);
+            }
+        };
+        a.setDuration(500); // in ms
+        v.startAnimation(a);
     }
 }

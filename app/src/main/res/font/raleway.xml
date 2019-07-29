@@ -4,9 +4,4 @@
     <font app:fontStyle="normal" app:fontWeight="400" app:font="@font/raleway_medium"/>
     <font app:fontStyle="italic" app:fontWeight="400" app:font="@font/raleway_mediumitalic" />
 
-    <font app:fontStyle="normal" app:fontWeight="200" app:font="@font/raleway_extralight"/>
-    <font app:fontStyle="italic" app:fontWeight="200" app:font="@font/raleway_extralightitalic" />
-
-    <font app:fontStyle="normal" app:fontWeight="600" app:font="@font/raleway_bold"/>
-
 </font-family>
