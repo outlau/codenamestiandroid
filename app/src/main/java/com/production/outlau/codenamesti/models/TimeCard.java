@@ -7,6 +7,9 @@ import java.util.TimeZone;
 
 
 public class TimeCard {
+
+//    String timeZone = "GMT+1";
+
     String datetime;
     Date date;
     public TimeCard(String datetime){
@@ -16,13 +19,13 @@ public class TimeCard {
 
     public String getDateString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
         return sdf.format(date);
     }
 
     public String getTimeString() {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
         return sdf.format(date);
     }
 
@@ -31,7 +34,7 @@ public class TimeCard {
     private Date setDate(String datetime){
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
             return sdf.parse(datetime);
         } catch (ParseException e){
             System.out.println("UH OH");

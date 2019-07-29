@@ -1,28 +1,22 @@
 package com.production.outlau.codenamesti.activities;
 
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.SupportMapFragment;
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.controllers.ImageCardAdapter;
-import com.production.outlau.codenamesti.controllers.VolleyHelper;
+import com.production.outlau.codenamesti.helpers.VolleyHelper;
 import com.production.outlau.codenamesti.helpers.RecyclerViewHelper;
 import com.production.outlau.codenamesti.interfaces.VolleyCallback;
 import com.production.outlau.codenamesti.models.ImageCard;
-import com.production.outlau.codenamesti.models.SoundCard;
 
 import org.json.JSONArray;
 
@@ -48,9 +42,9 @@ public class PicturesActivity extends Fragment {
         imageCardList = new ArrayList<>();
         imageCardAdapter = new ImageCardAdapter(getContext(), imageCardList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new RecyclerViewHelper(2, 10, true, getContext()));
+        recyclerView.addItemDecoration(new RecyclerViewHelper(1, 1, true, getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(imageCardAdapter);
 

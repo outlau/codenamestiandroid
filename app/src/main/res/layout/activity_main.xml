@@ -114,17 +114,17 @@
 
         <TextView
             android:id="@+id/blitzi_quote"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="60dp"
+            android:layout_weight="1"
             android:fontFamily="@font/raleway_extralightitalic"
             android:gravity="center"
-            android:text="The love of Blitzi heals The love of Blitzi heals The love of Blitzi heals"
+            android:text="The love of Blitzi is eternal"
             android:textColor="@color/white"
             android:textSize="18sp" />
 

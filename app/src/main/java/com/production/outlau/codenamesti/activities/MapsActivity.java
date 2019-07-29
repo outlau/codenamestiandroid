@@ -15,7 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.production.outlau.codenamesti.R;
-import com.production.outlau.codenamesti.controllers.VolleyHelper;
+import com.production.outlau.codenamesti.helpers.VolleyHelper;
 import com.production.outlau.codenamesti.interfaces.VolleyCallback;
 
 import org.json.JSONArray;

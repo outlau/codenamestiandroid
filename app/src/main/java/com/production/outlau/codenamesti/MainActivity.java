@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,13 +14,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.production.outlau.codenamesti.activities.CountdownActivity;
 import com.production.outlau.codenamesti.activities.MapsActivity;
@@ -30,13 +25,11 @@ import com.production.outlau.codenamesti.activities.MessagingActivity;
 import com.production.outlau.codenamesti.activities.PicturesActivity;
 import com.production.outlau.codenamesti.activities.SoundsActivity;
 import com.production.outlau.codenamesti.controllers.MainCardAdapter;
-import com.production.outlau.codenamesti.controllers.VolleyHelper;
+import com.production.outlau.codenamesti.helpers.VolleyHelper;
 import com.production.outlau.codenamesti.helpers.RecyclerViewHelper;
 import com.production.outlau.codenamesti.interfaces.VolleyCallback;
 import com.production.outlau.codenamesti.models.MainCard;
-import com.production.outlau.codenamesti.models.SoundCard;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -112,8 +105,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(sdf.format(date));
         dateTv.setText(sdf.format(date));
 
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         mainCardList = new ArrayList<>();
         adapter = new MainCardAdapter(this, mainCardList);
@@ -336,21 +328,5 @@ public class MainActivity extends AppCompatActivity {
         };
         a.setDuration(500); // in ms
         v.startAnimation(a);
-    }
-
-    public void GoToPictures(View v){
-        Intent intent = new Intent(this, PicturesActivity.class);
-        startActivity(intent);
-    }
-
-
-    public void GoToSounds(View v){
-        Intent intent = new Intent(this, SoundsActivity.class);
-        startActivity(intent);
-    }
-
-    public void GoToMessaging(View v){
-        Intent intent = new Intent(this, MessagingActivity.class);
-        startActivity(intent);
     }
 }

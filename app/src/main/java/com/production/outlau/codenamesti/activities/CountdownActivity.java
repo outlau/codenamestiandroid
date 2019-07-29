@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.comparators.DateSorter;
 import com.production.outlau.codenamesti.controllers.TimeCardAdapter;
-import com.production.outlau.codenamesti.controllers.VolleyHelper;
+import com.production.outlau.codenamesti.helpers.VolleyHelper;
 import com.production.outlau.codenamesti.helpers.RecyclerViewHelper;
 import com.production.outlau.codenamesti.interfaces.VolleyCallback;
 import com.production.outlau.codenamesti.models.TimeCard;
@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
 public class CountdownActivity extends Fragment {
@@ -114,17 +115,28 @@ public class CountdownActivity extends Fragment {
         volleyHelper.getString("times", new VolleyCallback() {
             @Override
             public void onSuccess(String result) {
-                startMillis = System.currentTimeMillis();
+//                startMillis = System.currentTimeMillis();
+                System.out.println("startDate");
+                System.out.println(Calendar.getInstance().getTime());
+                startMillis = Calendar.getInstance().getTime().getTime();
+                System.out.println("startMILLIS");
+                System.out.println(startMillis);
                 timeHeaderText.setText("Arriving in:");
                 try {
                     JSONArray jsonArray = new JSONArray(result);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String datetime = jsonObject.getString("datetime").replace("T"," ").replace("Z","");
+//                        System.out.println("DATE:");
+//                        System.out.println(datetime);
                         timeCardList.add(new TimeCard(datetime));
                     }
                     Collections.sort(timeCardList, new DateSorter());
+                    System.out.println("end date");
+                    System.out.println(timeCardList.get(0).getDate());
                     endMillis = timeCardList.get(0).getDate().getTime();
+                    System.out.println("endMillis");
+                    System.out.println(endMillis);
                     timeCardAdapter.notifyDataSetChanged();
 
                     timerContainer.setVisibility(View.VISIBLE);

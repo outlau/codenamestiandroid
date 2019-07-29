@@ -11,10 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.production.outlau.codenamesti.R;
 import com.production.outlau.codenamesti.controllers.SoundCardAdapter;
-import com.production.outlau.codenamesti.controllers.VolleyHelper;
+import com.production.outlau.codenamesti.helpers.VolleyHelper;
 import com.production.outlau.codenamesti.helpers.RecyclerViewHelper;
 import com.production.outlau.codenamesti.interfaces.VolleyCallback;
 import com.production.outlau.codenamesti.models.SoundCard;
